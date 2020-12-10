@@ -3,7 +3,7 @@
 FROM 763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-training:1.5.0-gpu-py36-cu101-ubuntu16.04
 LABEL author="vadimd@amazon.com"
 
-############# Installing MMDetection from source ############
+############# Installing MMAction2 from source ############
 
 WORKDIR /opt/ml/code
 RUN pip install --upgrade --force-reinstall  torch torchvision cython
@@ -16,7 +16,7 @@ RUN cd mmaction2/ && \
 
 # to address https://github.com/pytorch/pytorch/issues/37377
 ENV MKL_THREADING_LAYER GNU
-ENV MMDETECTION /opt/ml/code/mmaction2
+ENV MMACTION2 /opt/ml/code/mmaction2
 
 ############# Configuring Sagemaker ##############
 COPY container_training /opt/ml/code
