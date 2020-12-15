@@ -7,6 +7,22 @@ import subprocess
 import sys
 import shutil
 
+# if "MMACTION2" not in os.environ:
+#     os.environ["MMACTION2"] = "/opt/ml/code/mmaction2"
+# if "SM_MODEL_DIR" not in os.environ:
+#     os.environ["SM_MODEL_DIR"] = "/opt/ml/model"
+# if "SM_OUTPUT_DATA_DIR" not in os.environ:
+#     os.environ["SM_OUTPUT_DATA_DIR"] = "/opt/ml/output"
+# if "SM_CHANNEL_TRAINING" not in os.environ:
+#     os.environ["SM_CHANNEL_TRAINING"] = '/opt/ml/input/data/training'
+# if "SM_NUM_GPUS" not in os.environ:
+#     os.environ["SM_NUM_GPUS"] = "1"
+# if "SM_NUM_CPUS" not in os.environ:
+#     os.environ["SM_NUM_CPUS"] = "32"
+# if "SM_HOSTS" not in os.environ:
+#     os.environ["SM_HOSTS"] = "[\"algo-1\"]"
+# if "SM_CURRENT_HOST" not in os.environ:
+#     os.environ["SM_CURRENT_HOST"] = "algo-1"
 
 def get_training_world():
 
@@ -41,7 +57,7 @@ def training_configurator(args, world):
     """
     
     # updating path to config file inside SM container
-    abs_config_path = os.path.join("/opt/ml/code/mmaction2", args.config_file)
+    abs_config_path = os.path.join(os.environ["MMACTION2"], args.config_file)
     cfg = Config.fromfile(abs_config_path)
     
     if args.dataset.lower() == "kinetics400_tiny":
@@ -70,7 +86,7 @@ def training_configurator(args, world):
         # Modify num classes of the model in cls_head
         cfg.model.cls_head.num_classes = 2
         # We can use the pre-trained TSN model
-        cfg.load_from = os.path.join("/opt/ml/code/mmaction2", './checkpoints/tsn_r50_1x1x3_100e_kinetics400_rgb_20200614-e508be42.pth')
+#         cfg.load_from = os.path.join(os.environ["MMACTION2"], './checkpoints/tsn_r50_1x1x3_100e_kinetics400_rgb_20200614-e508be42.pth')  # TODO need to use a pretrained model
 
         # Set up working dir to save files and logs.
         cfg.work_dir = './tutorial_exps'
